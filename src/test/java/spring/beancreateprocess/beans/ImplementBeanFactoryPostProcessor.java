@@ -13,7 +13,7 @@ public class ImplementBeanFactoryPostProcessor implements BeanFactoryPostProcess
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        System.out.println(getClass().getName()+" invoke  postProcessBeanFactory...");
+        System.out.println(getClass().getName()+"->"+" invoke  postProcessBeanFactory...");
         BeanDefinition beanDefinition = beanFactory
                 .getBeanDefinition("spring.beancreateprocess.beans.Son#0");
         beanDefinition.getPropertyValues().add("age",100);

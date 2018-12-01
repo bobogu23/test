@@ -1,14 +1,18 @@
 package spring.beancreateprocess.beans;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import java.beans.PropertyDescriptor;
 
 /**
  * @author:ben.gu
  * @Date:2018/11/20 下午11:43
  */
-public class Son implements ApplicationContextAware {
+public class Son implements ApplicationContextAware  {
     private int age;
 
     public int getAge() {
@@ -16,6 +20,7 @@ public class Son implements ApplicationContextAware {
     }
 
     public void setAge(int age) {
+        System.out.println("set age:" + age);
         this.age = age;
     }
 
@@ -30,6 +35,7 @@ public class Son implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
+        System.out.println("setApplicationContext...");
     }
+
 }

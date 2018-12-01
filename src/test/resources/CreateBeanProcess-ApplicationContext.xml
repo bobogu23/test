@@ -14,5 +14,8 @@
     <bean class="spring.beancreateprocess.beans.ImplementBeanFactoryPostProcessor">
     </bean>
     <bean class="spring.beancreateprocess.beans.Son"/>
+    <bean class="spring.beancreateprocess.beans.ImplementBeanPostProcessor"/>
+
+    <bean class="spring.beancreateprocess.beans.InstantiationNotByBeanFactory"/>
 
 </beans>
