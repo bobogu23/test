@@ -16,7 +16,7 @@ public class InstantiationNotByBeanFactory implements InstantiationAwareBeanPost
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
         if(beanClass.isAssignableFrom(Son.class)){
             try {
-                System.out.println("son postProcessBeforeInstantiation");
+                System.out.println("son postProcessBeforeInstantiation and create bean");
                  return beanClass.newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
