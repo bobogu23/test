@@ -14,16 +14,16 @@ public class InstantiationNotByBeanFactory implements InstantiationAwareBeanPost
 
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-        if(beanClass.isAssignableFrom(Son.class)){
-            try {
-                System.out.println("son postProcessBeforeInstantiation and create bean");
-                 return beanClass.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(beanClass.isAssignableFrom(Son.class)){
+//            try {
+//                System.out.println("son postProcessBeforeInstantiation and create bean");
+//                 return beanClass.newInstance();
+//            } catch (InstantiationException e) {
+//                e.printStackTrace();
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        }
         return null;
     }
 
@@ -40,6 +40,9 @@ public class InstantiationNotByBeanFactory implements InstantiationAwareBeanPost
     @Override
     public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean,
             String beanName) throws BeansException {
+        if(bean instanceof Son){
+            System.out.println("son postProcessPropertyValues");
+        }
         return pvs;
     }
 
@@ -61,7 +64,6 @@ public class InstantiationNotByBeanFactory implements InstantiationAwareBeanPost
             Son son = (Son) bean;
             son.setAge(99);
         }
-
         return bean;
     }
 }

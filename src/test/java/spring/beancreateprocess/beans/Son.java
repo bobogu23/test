@@ -33,6 +33,16 @@ public class Son implements ApplicationContextAware  {
         System.out.println("age:" + age);
     }
 
+
+    public void init (){
+        System.out.println("son init");
+
+    }
+    public void destroy (){
+        System.out.println("son destroy");
+
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         System.out.println("setApplicationContext...");

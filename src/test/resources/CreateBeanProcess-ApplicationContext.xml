@@ -13,9 +13,11 @@
 
     <bean class="spring.beancreateprocess.beans.ImplementBeanFactoryPostProcessor">
     </bean>
-    <bean class="spring.beancreateprocess.beans.Son"/>
-    <bean class="spring.beancreateprocess.beans.ImplementBeanPostProcessor"/>
+    <!--<bean class="spring.beancreateprocess.beans.Son" init-method="init" destroy-method="destroy"/>-->
+    <!--<bean class="spring.beancreateprocess.beans.ImplementBeanPostProcessor"/>-->
 
-    <bean class="spring.beancreateprocess.beans.InstantiationNotByBeanFactory"/>
+    <!--<bean class="spring.beancreateprocess.beans.InstantiationNotByBeanFactory"/>-->
+    <bean class="spring.beancreateprocess.beans.CustomInitializeBean"/>
+
 
 </beans>

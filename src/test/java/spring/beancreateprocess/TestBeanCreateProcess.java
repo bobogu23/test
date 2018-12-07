@@ -17,8 +17,8 @@ import spring.beancreateprocess.beans.Son;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:CreateBeanProcess-ApplicationContext.xml"})
 public class TestBeanCreateProcess {
-    @Autowired
-    private Son son;
+//    @Autowired
+//    private Son son;
 
 
     /**
@@ -39,8 +39,13 @@ public class TestBeanCreateProcess {
      */
     @Test
     public void  testApplyBeanFactoryPostProcessor(){
-        Son bean = son;
-        System.out.println("getAge:"+bean.getAge());
+//        Son bean = son;
+//        System.out.println("getAge:"+bean.getAge());
+    }
+
+    @Test
+    public void  testCustomInitializeBean(){
+
     }
 
 
