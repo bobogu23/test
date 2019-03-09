@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+       default-lazy-init="false">
+
+    <bean name="pig" class="spring.beanfactorypostprocessor.DateFoo">
+        <property name="date" value="2019/3/1"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.util.Date">
+                    <ref bean="datePropertyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="datePropertyEditor" class="spring.beanfactorypostprocessor.DatePropertyEditor">
+        <property name="datePattern">
+            <value>yyyy/MM/dd</value>
+        </property>
+
+
+    </bean>
+
+
+</beans>

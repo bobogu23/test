@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
+ * 方法注入,可以实现每次都获取新的prototype类型的对象
  * @author:ben.gu
  * @Date:2018/10/31 下午10:02
  */
