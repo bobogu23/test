@@ -14,6 +14,7 @@
     <bean id="discountMethodInterceptor" class="spring.aop.advice.DiscountMethodInterceptor"/>
     <bean id="helloWorld" class="spring.aop.advice.HelloWorldImpl"/>
 
+    <!--1.0版本的AOP，通过ProxyFactoryBean 创建代理对象 Interceptor 指定advice-->
     <bean id="helloWorldProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="target" ref="helloWorld"/>
         <property name="interceptorNames">

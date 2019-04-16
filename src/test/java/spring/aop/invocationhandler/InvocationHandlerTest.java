@@ -10,6 +10,7 @@ import java.lang.reflect.Proxy;
 
 /**
  * jdk dynamic proxy
+ * 代理测试，生成代理class 文件
  * @author:ben.gu
  * @Date:2019/3/13 12:06 AM
  */

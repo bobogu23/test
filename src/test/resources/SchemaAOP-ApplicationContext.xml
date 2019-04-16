@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                        http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+       default-lazy-init="false">
+
+
+    <bean id ="hallo" class="spring.aop.schemaaop.Hallo"/>
+    <bean id ="myAop" class="spring.aop.schemaaop.SchemaBaseAop"/>
+    
+    <aop:config proxy-target-class="true">
+        <!--可以定义多个aspect,order属性指定顺序，order值越小优先级越高 -->
+        <aop:aspect ref="myAop" order="1">
+            <aop:pointcut id="myPointCut" expression="execution(public void *.say())"/>
+            <aop:after-returning method="doAfterReturning" pointcut-ref="myPointCut" returning="retValue" />
+            <aop:before method="doBefore" pointcut-ref="myPointCut" />
+            <!--introduction，增加新接口-->
+            <!--<aop:declare-parents types-matching="" implement-interface=""-->
+        </aop:aspect>
+
+    </aop:config>
+</beans>
