@@ -77,7 +77,6 @@ public class SinglyLinkedList {
             if (l.data == r.data) {
                 l = l.next;
                 r = r.next;
-                continue;
             } else {
                 break;
             }
