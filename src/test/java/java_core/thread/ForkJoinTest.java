@@ -1,5 +1,6 @@
 package java_core.thread;
 
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
@@ -61,20 +62,36 @@ public class ForkJoinTest {
     }
 
     public static void main(String args[]) {
+//
+//        int[] array = new int[400];
+//
+//        for (int i = 0; i < 400; i++) {
+//            array[i] = new Random().nextInt(400);
+//        }
+//
+//        // fork/join task:
+//        ForkJoinPool fjp = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+//
+//        long startTime =System.currentTimeMillis();
+//        Long result = fjp.invoke(new SumTask(0, 400, array));
+//        long endTime =System.currentTimeMillis();
+//        System.out.println("Fork/join sum: " + result + " in " + (endTime - startTime) + " ms.");
+        int i = (-1 << 29 )| 0;
+        System.err.println("i:"+i);
 
-        int[] array = new int[400];
+        int worker = i & ((1 << 29) - 1);
+        System.err.println("worker:"+worker);
 
-        for (int i = 0; i < 400; i++) {
-            array[i] = new Random().nextInt(400);
-        }
+        int worker1 = (i +1) & ((1 << 29) - 1);
+        System.err.println("worker1:"+worker1);
 
-        // fork/join task:
-        ForkJoinPool fjp = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+        Integer num = null;
+        Integer integer = Optional.ofNullable(num).orElse(0);
+        System.err.println("integer:"+integer);
+        num = 4;
+        integer = Optional.ofNullable(num).orElse(0);
+        System.err.println("integer:"+integer);
 
-        long startTime =System.currentTimeMillis();
-        Long result = fjp.invoke(new SumTask(0, 400, array));
-        long endTime =System.currentTimeMillis();
-        System.out.println("Fork/join sum: " + result + " in " + (endTime - startTime) + " ms.");
 
     }
 
