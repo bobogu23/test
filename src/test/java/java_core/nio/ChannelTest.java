@@ -15,20 +15,50 @@ public class ChannelTest {
     @Test
     public void testFileChannel() throws Exception {
 
-        RandomAccessFile raf =new RandomAccessFile("src/LoopTest.java","rw");
+        RandomAccessFile raf = new RandomAccessFile("src/LoopTest.java", "rw");
         FileChannel channel = raf.getChannel();
-        ByteBuffer byteBuffer =ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
         int read = channel.read(byteBuffer);
-        while (read != -1){
+        while (read != -1) {
             byteBuffer.flip();
-            while (byteBuffer.hasRemaining()){
-                System.err.println((char)byteBuffer.get());
+            while (byteBuffer.hasRemaining()) {
+                System.err.println((char) byteBuffer.get());
             }
             byteBuffer.compact();
             read = channel.read(byteBuffer);
         }
+        if (raf != null) {
+            raf.close();
+        }
 
-        if(raf != null){
+    }
+
+    @Test
+    public void testMarkRest() throws Exception {
+
+        RandomAccessFile raf = new RandomAccessFile("src/LoopTest.java", "rw");
+        FileChannel channel = raf.getChannel();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+        int read = channel.read(byteBuffer);
+        byteBuffer.flip();
+        int position = 0;
+
+        while (byteBuffer.hasRemaining()){
+
+            position = byteBuffer.position();
+            System.err.println("position:"+ position +",data:"+(char) byteBuffer.get());
+
+            if(position == 5){
+                byteBuffer.mark();
+            }
+            if(position == 10){
+                byteBuffer.reset();
+            }
+
+
+        }
+
+        if (raf != null) {
             raf.close();
         }
 
