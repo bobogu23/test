@@ -253,23 +253,43 @@ public class SinglyLinkedList {
         //
         //        System.err.println("linkedList11 删除倒数第0个节点:" + printNode(node2));
 
-        SinglyLinkedList linkedList12 = new SinglyLinkedList();
-        linkedList12.addLast(1);
-        linkedList12.addLast(2);
-        linkedList12.addLast(3);
-        linkedList12.addLast(10);
+//        SinglyLinkedList linkedList12 = new SinglyLinkedList();
+//        linkedList12.addLast(1);
+//        linkedList12.addLast(2);
+//        linkedList12.addLast(3);
+//        linkedList12.addLast(10);
+//
+//        SinglyLinkedList linkedList13 = new SinglyLinkedList();
+//
+//        linkedList13.addLast(5);
+//        linkedList13.addLast(6);
+//        linkedList13.addLast(20);
+//
+//        System.err.println(
+//                "merge list :" + printNode(linkedList12.mergeTwoList(linkedList12.head, linkedList13.head)));
 
-        SinglyLinkedList linkedList13 = new SinglyLinkedList();
 
-        linkedList13.addLast(5);
-        linkedList13.addLast(6);
-        linkedList13.addLast(20);
+
+
+        SinglyLinkedList linkedList14 = new SinglyLinkedList();
+//        linkedList14.addLast(1);
+//        linkedList14.addLast(2);
+//        linkedList14.addLast(3);
+//        linkedList14.addLast(4);
+//        linkedList14.addLast(5);
+//        linkedList14.addLast(6);
+//        linkedList14.addLast(7);
+//        linkedList14.addLast(8);
+        linkedList14.addLast(69);
+
+        SinglyLinkedList linkedList15 = new SinglyLinkedList();
+
+        linkedList15.addLast(9);
+        linkedList15.addLast(10);
+        linkedList15.addLast(20);
 
         System.err.println(
-                "merge list :" + printNode(linkedList12.mergeTwoList(linkedList12.head, linkedList13.head)));
-
-
-
+                "merge list :" + printNode(linkedList14.mergeTwoList2(linkedList14.head, linkedList15.head)));
     }
 
     /**
@@ -401,6 +421,12 @@ public class SinglyLinkedList {
         return header;
     }
 
+    /**
+     * 合并有序链表
+     * @param n1
+     * @param n2
+     * @return
+     */
     private Node mergeTwoList(Node n1, Node n2) {
         if (n1 == null) {
             return n2;
@@ -420,6 +446,53 @@ public class SinglyLinkedList {
         }
 
         return header;
-
     }
+
+    /**
+     * 合并有序链表2
+     * @param n1
+     * @param n2
+     * @return
+     */
+    private Node mergeTwoList2(Node n1, Node n2) {
+        if (n1 == null) {
+            return n2;
+        }
+        if (n2 == null) {
+            return n1;
+        }
+
+        //新建头节点,指向两个链表中较小的节点
+        Node header = null;
+
+        Node move = null;
+        if (n1.data <= n2.data) {
+            header = move = n1;
+            n1 = n1.next;
+        } else {
+            header = move = n2;
+            n2 = n2.next;
+        }
+
+        while (n1 != null && n2 != null) {
+            if (n1.data <= n2.data) {
+                move.next = n1;
+                n1 = n1.next;
+                move = move.next;
+            } else {
+                move.next = n2;
+                n2 = n2.next;
+                move = move.next;
+            }
+        }
+
+        if (n1 == null) {
+            move.next = n2;
+        } else {
+            move.next = n1;
+        }
+
+        return header;
+    }
+
 }
