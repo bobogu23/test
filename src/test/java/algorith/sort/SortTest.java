@@ -18,10 +18,12 @@ public class SortTest {
         //        insertSort(l1, l1.length);
         //        System.err.println(JSON.toJSONString(l1));
 
-        //        int[] l2= { 1, 2, 3, 4, 5, 6, 7, 8,9,10 };
-//        int[] l2 = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+        //                int[] l2= { 1, 2, 3, 4, 5, 6, 7, 8,9,10 };
+        //                int[] l2 = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
         int[] l2 = { 10, 9, 8, 7, 46, 53, 14, 3, 2, 100 };
-        mergeSort(l2, l2.length);
+        //        mergeSort(l2, l2.length);
+        //        quickSort(l2, l2.length);
+        quickSortFindKBigEle(l2, 0, l2.length - 1, 5);
         System.err.println(JSON.toJSONString(l2));
 
     }
@@ -98,6 +100,54 @@ public class SortTest {
      *
      */
 
+    public static void quickSort(int array[], int len) {
+
+        quickSortSub(array, 0, len - 1);
+    }
+
+    private static void quickSortSub(int[] array, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+
+        int partion = partion(array, start, end);
+        quickSortSub(array, start, partion - 1);
+        quickSortSub(array, partion + 1, end);
+    }
+
+    private static void quickSortFindKBigEle(int[] array, int start, int end, int k) {
+        if (start >= end) {
+            return;
+        }
+
+        int partion = partion(array, start, end);
+        if (partion + 1 == k) {
+            System.err.println("k ele:" + array[partion]);
+        }
+        quickSortFindKBigEle(array, start, partion - 1, k);
+        quickSortFindKBigEle(array, partion + 1, end, k);
+    }
+
+    private static int partion(int[] array, int start, int end) {
+        //选择数组最后一个元素作为pivot
+        //从start位置开始,与pivot比较，比pivot小的放左边
+        int pivot = array[end];
+        int i = start;
+        for (int j = start; j < end; j++) {
+            //类似选择排序
+            if (array[j] < pivot) {
+                int temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+                i++;
+            }
+        }
+        int temp = array[i];
+        array[i] = array[end];
+        array[end] = temp;
+        return i;
+    }
+
     /**
      * 归并排序：
      * 将要排序的数组分成一半,各自再分成一半排序,直到不能再分为止。排序好之后将结果排序最终得到排序好的数组
@@ -142,7 +192,7 @@ public class SortTest {
         //前一个数组移完了,移动后一个数组里的剩余元素
         int leftStart = i;
         int leftEnd = mid;
-        //上面i++之后 可能大于mid
+        //上面i++之后 大于mid
         if (i > mid) {
             leftStart = j;
             leftEnd = e;
