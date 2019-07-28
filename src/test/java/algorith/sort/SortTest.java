@@ -51,6 +51,7 @@ public class SortTest {
                     //未排序数比已排序的小,移位
                     array[j + 1] = array[j];
                 } else {
+                    //已排序数组的最后一个元素（已排序的最大值）与未排序的值比较,如果小于未排序的直接结束
                     break;
                 }
             }
@@ -66,11 +67,11 @@ public class SortTest {
      */
     public static void bubbleSort(int[] array, int n) {
 
-        //排序同时统计是否有交换操作，如果没有说明已经排序完成
         if (n <= 1) {
             return;
         }
 
+        //排序同时统计是否有交换操作，如果没有说明已经排序完成
         for (int i = 0; i < n; i++) {
             boolean moved = false;
             for (int j = 0; j < n - 1 - i; j++) {
@@ -122,7 +123,7 @@ public class SortTest {
 
         int partion = partion(array, start, end);
         if (partion + 1 == k) {
-            System.err.println("k ele:" + array[partion]);
+            System.err.println("k element:" + array[partion]);
         }
         quickSortFindKBigEle(array, start, partion - 1, k);
         quickSortFindKBigEle(array, partion + 1, end, k);
@@ -142,6 +143,8 @@ public class SortTest {
                 i++;
             }
         }
+        //从0到i-1的元素现在都小于pivot位置的元素，将pivot位置的元素放在i的位置。
+        // 此时pivot位置的元素已经排好序，继续排序0到i-1 和 i+1 到end 之间的元素
         int temp = array[i];
         array[i] = array[end];
         array[end] = temp;

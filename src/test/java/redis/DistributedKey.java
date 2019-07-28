@@ -14,7 +14,7 @@ import java.util.UUID;
  * @author:ben.gu
  * @Date:2019/4/28 11:34 AM
  */
-public class DistributedKey {
+public class  DistributedKey {
     private Jedis jedis;
 
     private static final String SUCCESS = "OK";
