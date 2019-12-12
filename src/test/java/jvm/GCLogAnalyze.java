@@ -127,8 +127,49 @@ public class GCLogAnalyze {
          Metaspace       used 2678K, capacity 4486K, committed 4864K, reserved 1056768K
          class space    used 287K, capacity 386K, committed 512K, reserved 1048576K
 
+         1803284-21140
+
+         (2098-1690)/600
+
+         600/360=1.67
+         819/1.67=490 //490M每秒
+
+         280 qps
+         490/280=1.75M (一次请求)
+
+         sur= 2658671-850404 = 1808267
+         ygc 后 sur =1822151-13451=1808700
+
+         晋升: 1808700-1808267 =433 kb
+
+         sur 最小内存1600 M
+
+         -XX:CMSInitiatingOccupancyFraction=70
+         -XX:CMSFullGCsBeforeCompaction=5
+
+         可以改成
+         -XX:CMSInitiatingOccupancyFraction=80
+         -XX:CMSFullGCsBeforeCompaction=0
+
+         old generation
+         1024*2=2048M
+         2048*0.8=1638.4(可用内存)
+         2048/0.8=2560M
+
+         young generation
+         4*1024-2560=1536M
+         eden:1536*8/10=1228M (1024*8/10=819M)
+         Survivor:1536/10=153.6M(1024/10=102.4M)
+
+
+         1228/490=2.5s 一次
+
+
+
+
 
          */
+
 
     }
 
