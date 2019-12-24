@@ -1,0 +1,10 @@
+syntax = "proto2";
+package transmitwithprotobuf;
+
+option java_package = "netty.timeserver.transmitwithprotobuf";
+option java_outer_classname = "Animal";
+
+message Person {
+    required string name = 1;
+    optional int32 id = 2;
+}

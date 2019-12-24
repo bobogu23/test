@@ -35,8 +35,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
                     <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -52,10 +52,11 @@
                     </executions>
                 </plugin>
 
-        </>
+        </plugins>
     </build>
     <modules>
         <module>myagent</module>
+        <module>mytest01springbootstarter</module>
     </modules>
 
     <dependencies>
@@ -171,6 +172,22 @@
             <artifactId>maven-plugin-annotations</artifactId>
             <version>3.1</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.10.Final</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.11.1</version>
+        </dependency>
+
 
 
     </dependencies>
