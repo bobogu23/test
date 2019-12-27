@@ -25,5 +25,7 @@ public class ClientDemo {
         } finally {
             workerGroup.shutdownGracefully();
         }
+
+        System.err.println("cpu num:"+Runtime.getRuntime().availableProcessors());
     }
 }

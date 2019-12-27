@@ -31,6 +31,7 @@ public class SelectorTest {
 
             readBuffer.clear();
             channel.read(readBuffer);
+            break;
         }
 
     }
@@ -46,17 +47,26 @@ public class SelectorTest {
         channel.register(selector, SelectionKey.OP_ACCEPT);
 
         ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
-        ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+        ByteBuffer readBuffer = ByteBuffer.allocate(1);
 
         writeBuffer.put("hello clientServer".getBytes());
         writeBuffer.flip();
         while (true) {
-            int selectionKey = selector.select();
+
+            //准备就绪的channel个数
+            int readyNum = selector.select();
+
+
             Set<SelectionKey> selectionKeys = selector.selectedKeys();
             Iterator<SelectionKey> iterator = selectionKeys.iterator();
             while (iterator.hasNext()) {
                 SelectionKey key = iterator.next();
-                iterator.remove();
+//                key.channel();
+//                key.selector();
+                //附加对象到selectionkey 上，方便识别特定channel
+                key.attach(new Object());
+
+
 
                 if (key.isAcceptable()) {
                     SocketChannel socketChannel = channel.accept();
@@ -76,7 +86,7 @@ public class SelectorTest {
                     key.interestOps(SelectionKey.OP_READ);
 
                 }
-
+                iterator.remove();
 
             }
 
