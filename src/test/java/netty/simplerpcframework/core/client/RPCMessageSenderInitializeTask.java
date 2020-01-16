@@ -13,6 +13,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import netty.simplerpcframework.core.client.channel.RPCMessageSendChannelInitializer;
 import netty.simplerpcframework.core.client.channel.RPCMessageSenderHandler;
+import netty.simplerpcframework.core.registry.zk.ServiceNodeCallBack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +22,9 @@ import org.slf4j.LoggerFactory;
  * @Date:2020/1/6 4:36 PM
  */
 public class RPCMessageSenderInitializeTask implements Runnable {
-    private final int connectionSize;
-
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    private final int connectionSize;
 
     private EventLoopGroup eventLoopGroup;
 
@@ -31,14 +32,26 @@ public class RPCMessageSenderInitializeTask implements Runnable {
 
     private RpcServerLoader rpcServerLoader;
 
+    private int parallel;
+
+    private ServiceNodeCallBack serviceNodeCallBack;
+
     //建立多个channel,提高并发量
 
-    public RPCMessageSenderInitializeTask(EventLoopGroup eventLoopGroup, InetSocketAddress serverAddress,
-            RpcServerLoader rpcServerLoader, int connectionSize) {
-        this.eventLoopGroup = eventLoopGroup;
-        this.serverAddress = serverAddress;
+    //    public RPCMessageSenderInitializeTask(EventLoopGroup eventLoopGroup, InetSocketAddress serverAddress,
+    //            RpcServerLoader rpcServerLoader, int connectionSize) {
+    //        this.eventLoopGroup = eventLoopGroup;
+    //        this.serverAddress = serverAddress;
+    //        this.rpcServerLoader = rpcServerLoader;
+    //        this.connectionSize = connectionSize;
+    //    }
+
+    public RPCMessageSenderInitializeTask(int parallel, RpcServerLoader rpcServerLoader, int connectionSize,
+            ServiceNodeCallBack serviceNodeCallBack) {
+        this.parallel = parallel;
         this.rpcServerLoader = rpcServerLoader;
         this.connectionSize = connectionSize;
+        this.serviceNodeCallBack = serviceNodeCallBack;
     }
 
     @Override

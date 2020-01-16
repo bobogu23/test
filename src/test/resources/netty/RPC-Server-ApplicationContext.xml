@@ -16,6 +16,7 @@
     <context:component-scan base-package="netty"/>
     <bean id="receiverExecutor" class="netty.simplerpcframework.core.server.RPCMessageReceiverExecutor">
         <constructor-arg name="address" value="${server.address}"/>
+        <constructor-arg name="zkAddress" value="${zk.address}"/>
     </bean>
 
     <bean id="serverMap" class="netty.simplerpcframework.model.RPCServiceMap">

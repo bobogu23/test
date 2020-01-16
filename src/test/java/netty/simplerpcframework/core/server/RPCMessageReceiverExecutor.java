@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import io.netty.util.concurrent.DefaultThreadFactory;
+import netty.simplerpcframework.core.registry.zk.ServiceRegistry;
 import netty.simplerpcframework.core.server.thread.AbortPolicyWithReport;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -39,6 +40,11 @@ public class RPCMessageReceiverExecutor implements ApplicationContextAware, Init
 
     private String address;
 
+    private String zkAddress;
+
+    /*
+     * servicename 对应的bean
+     */
     private Map<String, Object> handlerMap = new HashMap<>();
 
 
@@ -53,6 +59,11 @@ public class RPCMessageReceiverExecutor implements ApplicationContextAware, Init
 
     public RPCMessageReceiverExecutor(String address) {
         this.address = address;
+    }
+
+    public RPCMessageReceiverExecutor(String address, String zkAddress) {
+        this.address = address;
+        this.zkAddress = zkAddress;
     }
 
     @Override
@@ -70,15 +81,23 @@ public class RPCMessageReceiverExecutor implements ApplicationContextAware, Init
             String[] hostPorts = StringUtils.split(this.address, DELIMITER);
             ChannelFuture future = bootstrap.bind(hostPorts[0], Integer.parseInt(hostPorts[1])).sync();
             logger.info("netty rpc server bind ip:{},port:{}", hostPorts[0], Integer.parseInt(hostPorts[1]));
-            future.channel().closeFuture().sync();
-
             //创建core 线程
             threadPoolExecutor.prestartCoreThread();
 
+            //服务注册
+            registService(this.address);
+
+            future.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }
+
+    }
+
+    private void registService(String address) {
+        ServiceRegistry instance = ServiceRegistry.getInstance(this.zkAddress);
+        handlerMap.forEach((key, value) -> instance.createServiceNameAddressNode(key, address));
 
     }
 
