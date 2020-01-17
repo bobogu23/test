@@ -3,12 +3,14 @@ package netty.simplerpcframework.core.client;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import netty.simplerpcframework.core.client.channel.RPCMessageSenderHandler;
+import netty.simplerpcframework.core.registry.zk.ServiceNodeCallBack;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,11 +29,6 @@ public class RpcServerLoader {
 
     private static final int parallel = Runtime.getRuntime().availableProcessors() * 2;
 
-    private static ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(parallel, parallel + 10, 10,
-            TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(parallel));
-
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
-
     private RPCMessageSenderHandler[] messageSenderHandlers;
 
     private Lock lock = new ReentrantLock();
@@ -39,8 +36,6 @@ public class RpcServerLoader {
     private Condition condition = lock.newCondition();
 
     private int connectionSize;
-
-    private ConcurrentHashMap<String, List<String>> serviceNameAddressMap = new ConcurrentHashMap<>();
 
     private ConcurrentHashMap<String, RPCMessageSenderHandler[]> serviceNameHandlerMap = new ConcurrentHashMap<>();
 
@@ -57,27 +52,17 @@ public class RpcServerLoader {
      * 2.节点删除,serviceName 与 RPCMessageSenderHandler 映射关系中与节点地址相关的handler 关闭，移除
      *
      */
-    public void load(String remoteAddress, int connectionSize) {
+    public void load(String zkAddress, int connectionSize) {
         this.connectionSize = connectionSize;
-        String[] ipAddr = StringUtils.split(remoteAddress, ":");
-        if (ipAddr != null && ipAddr.length == 2) {
-            String host = ipAddr[0];
-            int port = Integer.parseInt(ipAddr[1]);
-            InetSocketAddress address = new InetSocketAddress(host, port);
+        ServiceNodeCallBack callBack = new ServiceNodeCallBackImpl();
+        new RPCMessageSenderInitializeTask(parallel, this, connectionSize, callBack, zkAddress).run();
 
-            new RPCMessageSenderInitializeTask(eventLoopGroup, address, this, connectionSize).run();
-
-        }
     }
-
-
 
     public void unload() {
         if (messageSenderHandlers != null) {
             Arrays.stream(messageSenderHandlers).forEach(RPCMessageSenderHandler::close);
         }
-        threadPoolExecutor.shutdown();
-        eventLoopGroup.shutdownGracefully();
     }
 
     public static RpcServerLoader getInstance() {
@@ -91,27 +76,48 @@ public class RpcServerLoader {
         return loader;
     }
 
-    public RPCMessageSenderHandler[] getMessageSenderHandlers() {
-        if (messageSenderHandlers == null) {
+//    public RPCMessageSenderHandler[] getMessageSenderHandlers() {
+//        if (messageSenderHandlers == null) {
+//            lock.lock();
+//            try {
+//                if (messageSenderHandlers == null) {
+//                    condition.await();
+//                }
+//                return messageSenderHandlers;
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } finally {
+//                lock.unlock();
+//            }
+//        }
+//        return messageSenderHandlers;
+//    }
+
+    public RPCMessageSenderHandler[] getMessageSenderHandlers(String serviceName) {
+        if (serviceNameHandlerMap.size() == 0) {
             lock.lock();
             try {
-                if (messageSenderHandlers == null) {
+                if (serviceNameHandlerMap.size() == 0) {
                     condition.await();
                 }
-                return messageSenderHandlers;
+                return serviceNameHandlerMap.get(serviceName);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
                 lock.unlock();
             }
         }
-        return messageSenderHandlers;
+        return serviceNameHandlerMap.get(serviceName);
     }
 
-    public void setMessageSenderHandler(RPCMessageSenderHandler[] messageSenderHandler) {
+
+
+    public void setMessageSenderHandler(Map<String, RPCMessageSenderHandler[]> serviceNameHandlerMap,
+            Map<String, RPCMessageSenderHandler[]> addressHandlerMap) {
         lock.lock();
         try {
-            messageSenderHandlers = messageSenderHandler;
+            this.serviceNameHandlerMap.putAll(serviceNameHandlerMap);
+            this.addressHandlerMap.putAll(addressHandlerMap);
             condition.signalAll();
         } finally {
             lock.unlock();

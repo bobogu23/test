@@ -80,6 +80,10 @@ public class ServiceDiscovery implements Watcher {
         return zk;
     }
 
+    /**
+     * serviceName,地址 映射
+     * @return serviceName,地址 映射
+     */
     public Map<String, List<String>> getNodeChildMap() {
         return nodeChildMap;
     }
