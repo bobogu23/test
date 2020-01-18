@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 import org.apache.zookeeper.*;
-import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +77,7 @@ public class ServiceRegistry {
      */
     public void createServiceNameAddressNode(String serviceName, String address) {
         try {
-            if (zk.exists(SLASH + serviceName, false) == null) {
+            if (zk.exists(ROOT_PATH + SLASH + serviceName, false) == null) {
                 String path = zk.create(ROOT_PATH + SLASH + serviceName, null, ZooDefs.Ids.OPEN_ACL_UNSAFE,
                         CreateMode.PERSISTENT);
                 logger.info("node:{},actual path:{}", serviceName, path);
@@ -94,10 +93,6 @@ public class ServiceRegistry {
     private static class ZkWatcher implements Watcher {
         private CountDownLatch cdl;
 
-        private Logger logger = LoggerFactory.getLogger(getClass());
-
-        private Stat stat = new Stat();
-
         public ZkWatcher(CountDownLatch cdl) {
             this.cdl = cdl;
         }
@@ -107,13 +102,7 @@ public class ServiceRegistry {
             if (Event.KeeperState.SyncConnected == watchedEvent.getState()) {
                 if (Event.EventType.None == watchedEvent.getType() && watchedEvent.getPath() == null) {
                     cdl.countDown();
-                } /*else if (watchedEvent.getType() == Event.EventType.NodeDataChanged) {
-                    try {
-                        logger.info("节点数据修改。新值:{}", new String(zk.getData(watchedEvent.getPath(), true, stat)));
-                    } catch (Exception e) {
-                        logger.error("zk getData error:", e);
-                    }
-                  }*/
+                }
 
             }
         }

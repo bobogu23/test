@@ -12,13 +12,11 @@ public class RPCServiceProxy {
     private RpcServerLoader loader = RpcServerLoader.getInstance();
 
     //每个service 代理对应一个计数器,轮询使用handler
-    private AtomicInteger index = new AtomicInteger();
-
-    private ConcurrentHashMap<Class,AtomicInteger> serviceIndexMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Class, AtomicInteger> serviceIndexMap = new ConcurrentHashMap<>();
 
     //初始化, 建立与服务端的链接
-    public RPCServiceProxy(String remoteAddress) {
-        loader.load(remoteAddress, 4);
+    public RPCServiceProxy(String zkAddress) {
+        loader.load(zkAddress, 4);
     }
 
     public void stop() {
@@ -26,9 +24,10 @@ public class RPCServiceProxy {
     }
 
     public <T> T getProxy(Class<T> customServiceInterface) {
-        serviceIndexMap.putIfAbsent(customServiceInterface, new AtomicInteger());
+        AtomicInteger atomicInteger = serviceIndexMap.putIfAbsent(customServiceInterface, new AtomicInteger());
 
-        int num = serviceIndexMap.get(customServiceInterface).get();
+        int num = atomicInteger != null ? atomicInteger.incrementAndGet()
+                : serviceIndexMap.get(customServiceInterface).incrementAndGet();
 
         return (T) Proxy.newProxyInstance(customServiceInterface.getClassLoader(),
                 new Class[] { customServiceInterface }, new RPCMessageSenderProxy(getPositive(num)));

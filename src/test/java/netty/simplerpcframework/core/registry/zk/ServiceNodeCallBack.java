@@ -13,7 +13,8 @@ public interface ServiceNodeCallBack {
     /**
      * 回调通知
      * @param type 事件类型。1:新增，2:删除
-     * @param nodeChildsMap 节点，子节点映射关系.key:node,value:child list.
+     * @param nodeChildsMap 节点，子节点映射关系.key:node(serviceName),value:child list(service Address).
+     * 如果 type ==2,value中的 list 是删除的地址
      */
     void  callBack(int type,Map<String,List<String>> nodeChildsMap);
 }

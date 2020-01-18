@@ -12,7 +12,7 @@ import netty.simplerpcframework.service.HelloWordService;
 public class NettyRPCConcurrentTest {
 
     public static void main(String args[]) throws InterruptedException {
-        RPCServiceProxy serviceProxy = new RPCServiceProxy("localhost:8099");
+        RPCServiceProxy serviceProxy = new RPCServiceProxy("localhost:2181");
         int parallel = 1000;
         CountDownLatch signal = new CountDownLatch(1);
         CountDownLatch finish = new CountDownLatch(parallel);

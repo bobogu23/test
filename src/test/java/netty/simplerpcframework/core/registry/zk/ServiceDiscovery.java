@@ -20,7 +20,7 @@ public class ServiceDiscovery implements Watcher {
 
     private String zkAdress;
 
-    private CountDownLatch cdl = new CountDownLatch(1);
+    private CountDownLatch cdl;
 
     private ZooKeeper zk;
 
@@ -31,12 +31,6 @@ public class ServiceDiscovery implements Watcher {
     private static String SLASH = "/";
 
     private static ServiceDiscovery serviceRegistry;
-
-    private Map<String, List<String>> nodeChildMap;
-
-    private ServiceDiscovery() {
-
-    }
 
     private ServiceDiscovery(String zkAdress, ServiceNodeCallBack callBack) {
         this.zkAdress = zkAdress;
@@ -67,13 +61,14 @@ public class ServiceDiscovery implements Watcher {
 
     private ZooKeeper connectServer() {
         ZooKeeper zk = null;
+        this.cdl = new CountDownLatch(1);
         try {
-            zk = new ZooKeeper(zkAdress, 5000, new ServiceDiscovery());
+            zk = new ZooKeeper(zkAdress, 5000, this);
         } catch (IOException e) {
             logger.error("connect zk error:", e);
         }
         try {
-            cdl.await();
+            this.cdl.await();
         } catch (InterruptedException e) {
             logger.error("zk connect wait error:", e);
         }
@@ -85,46 +80,55 @@ public class ServiceDiscovery implements Watcher {
      * @return serviceName,地址 映射
      */
     public Map<String, List<String>> getNodeChildMap() {
+        Map<String, List<String>> nodeChildMap = new HashMap<>();
+        try {
+            getNodeInfo(ROOT_PATH, nodeChildMap);
+        } catch (Exception e) {
+            logger.error("get zk node info error:", e);
+        }
         return nodeChildMap;
     }
 
     @Override
     public void process(WatchedEvent event) {
-        String path = event.getPath();
-        try {
-            //先保存一份初始化值
-            if (event.getType() == Event.EventType.None) {
-                Map<String, List<String>> nodeChildMap = new HashMap<>();
-                getNodeInfo(ROOT_PATH, nodeChildMap);
-                this.nodeChildMap = nodeChildMap;
-            }
-            //监听节点 删除,新增事件
-            else if (event.getType() == Event.EventType.NodeDeleted
-                    || event.getType() == Event.EventType.NodeChildrenChanged) {
-                //节点发生变化触发回调
-                Map<String, List<String>> nodeChildsMap = new HashMap<>();
-                if (event.getType() == Event.EventType.NodeDeleted) {
-                    String childPath = path.substring(path.lastIndexOf(SLASH) + 1);
-                    String parentPath = path.substring(ROOT_PATH.length() + 1, path.lastIndexOf(SLASH));
-                    nodeChildsMap.put(parentPath, Lists.newArrayList(childPath));
-                    this.callBack.callBack(2, nodeChildsMap);
-                } else {
-                    getNodeInfo(path, nodeChildsMap);
-                    this.callBack.callBack(1, nodeChildsMap);
-                }
-            }
-            //zk 监听只会触发一次，触发后,重新监听.
-            watchChild(ROOT_PATH);
 
-        } catch (Exception e) {
-            logger.error("get child node error:", 2);
-        }
+        String path = event.getPath();
 
         if (Event.KeeperState.SyncConnected == event.getState()) {
             if (Event.EventType.None == event.getType() && path == null) {
                 cdl.countDown();
+                return;
+            }
+            try {
+                //监听节点 删除,新增事件
+                if (event.getType() == Event.EventType.NodeDeleted
+                        || event.getType() == Event.EventType.NodeChildrenChanged) {
+
+                    logger.info("watch event:{},path:{}", event.getType(), event.getPath());
+                    //节点发生变化触发回调
+                    Map<String, List<String>> nodeChildsMap = new HashMap<>();
+                    if (event.getType() == Event.EventType.NodeDeleted) {
+                        String childPath = path.substring(path.lastIndexOf(SLASH) + 1);
+                        String parentPath = path.substring(ROOT_PATH.length() + 1, path.lastIndexOf(SLASH));
+                        nodeChildsMap.put(parentPath, Lists.newArrayList(childPath));
+                        this.callBack.callBack(2, nodeChildsMap);
+                    } else {
+                        getNodeInfo(path, nodeChildsMap);
+                        this.callBack.callBack(1, nodeChildsMap);
+                    }
+                }
+                //zk 监听只会触发一次，触发后,重新监听.
+                watchChild(ROOT_PATH);
+            } catch (Exception e) {
+                logger.error("get child node error:", e);
             }
         }
+        //断开重连
+        else if (Event.KeeperState.Expired == event.getState()) {
+            logger.info("reconnect zk server...");
+            this.zk = connectServer();
+        }
+
     }
 
     private void watchChild(String path) throws KeeperException, InterruptedException {
