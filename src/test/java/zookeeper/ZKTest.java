@@ -38,6 +38,8 @@ public class ZKTest {
                 zk.create(path, "hello".getBytes(Charset.forName("utf-8")), ZooDefs.Ids.OPEN_ACL_UNSAFE,
                         CreateMode.PERSISTENT);
             }
+            zk.create(path+"/subaa", "hello".getBytes(Charset.forName("utf-8")), ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                    CreateMode.EPHEMERAL_SEQUENTIAL);
 
             System.err.println(new String(zk.getData(path, true, stat)));
 
@@ -82,11 +84,11 @@ public class ZKTest {
 
             try {
 
-                zk.getChildren("/simpleRpc", true);
+                zk.getChildren(path, true);
 
                 Map<String, List<String>> nodeChildsMap = new HashMap<>();
                 //不能从 根节点开始遍历,如果数据量很大,消耗性能
-                setChildNodes("/simpleRpc", nodeChildsMap);
+                setChildNodes(path, nodeChildsMap);
 
                 System.err.println("nodeChildsMap:" + JSON.toJSONString(nodeChildsMap));
             } catch (KeeperException e) {
