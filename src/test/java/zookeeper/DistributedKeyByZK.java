@@ -1,14 +1,15 @@
 package zookeeper;
 
-import com.sun.istack.internal.Pool;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+
 import org.apache.zookeeper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * 原理 在zk中创建一个节点做为共享资源，zk 客户端以创建子节点的形式占用共享资源,实现获取锁
