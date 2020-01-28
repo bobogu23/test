@@ -1,4 +1,4 @@
-package algorith.array_stack;
+package algorith.array_list;
 
 /**
  * 大小固定的有序数组，支持动态增删改操作
@@ -121,7 +121,6 @@ public class SortedArray {
         while (low <= high) {
             //如果使用 (high+low)/2 可能出现整数溢出
             int mid = low + (high - low) / 2;
-
             if (array[mid] >= elem) {
                 if (mid == 0 || array[mid - 1] < elem) {
                     return mid;

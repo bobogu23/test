@@ -1,6 +1,4 @@
-package algorith.array_stack;
-
-import java.util.Arrays;
+package algorith.array_list;
 
 /**
  * @author:ben.gu
