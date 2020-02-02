@@ -22,6 +22,10 @@ public class Sort {
         array = new int[] { 1, 10, 1, 100, 9, 20 };
         sort1 = sort.sort(array);
         System.err.println(Arrays.toString(sort1));
+
+        array = new int[] { 1, 10, 1, 100, 9, 20,4 };
+        sort1 = sort.sort(array);
+        System.err.println(Arrays.toString(sort1));
     }
 
     public int[] sort(int[] array) {
