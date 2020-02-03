@@ -1,5 +1,6 @@
 package algorith.recusive;
 
+import java.util.ArrayDeque;
 import java.util.Stack;
 
 /**
@@ -70,7 +71,7 @@ public class ReversePolishNotation {
     }
 
     public int evalRPN2(String[] tokens) {
-        Stack<Integer> stack = new Stack<>();
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
         for (String t : tokens) {
             if ("+".equals(t)) {
                 //pop 2 number
