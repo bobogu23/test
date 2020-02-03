@@ -1,7 +1,5 @@
 package algorith.sort;
 
-import redis.clients.jedis.PipelineBase;
-
 import java.util.Arrays;
 
 /**
@@ -10,6 +8,8 @@ import java.util.Arrays;
  * pivot右边都是大于pivot位置上元素的数.继续分隔 0-pivot-1, pivot+1 - end,也随机选个中心点,将数组中小于pivot的数放
  * pivot左边，大于pivot的数放pivot右边，一直到无法分隔位置
  *
+ * 时间复杂度 nlog^n  ,空间复杂度 O(1)
+ * 原地排序，不稳定 相同的数据排序后会发生变化
  * @author:ben.gu
  * @Date:2020/2/3 5:08 PM
  */
