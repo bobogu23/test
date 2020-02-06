@@ -16,10 +16,11 @@ import java.util.Arrays;
 public class QuickSortTest {
 
     public static void main(String args[]) {
-        int[] array = {1,30,2,3,40,23};
-        QuickSortTest t =  new QuickSortTest();
-        t.quickSort(array,6);
-        System.err.println("array:"+ Arrays.toString(array));
+        int[] array = { 1, 30, 2, 3, 40, 23, 100, 31, 20 };
+        QuickSortTest t = new QuickSortTest();
+        t.quickSort(array, 9);
+        System.err.println("array:" + Arrays.toString(array));
+        System.err.println("the element:" + t.theKElem(array, 2));
     }
 
     // array 待排序数组。n 数组长度
@@ -36,6 +37,7 @@ public class QuickSortTest {
 
         quickSort1(array, begin, pivot - 1);
         quickSort1(array, pivot, end);
+
     }
 
     private int partition(int[] array, int begin, int end) {
@@ -54,7 +56,6 @@ public class QuickSortTest {
                 array[i] = tmp;
                 i++;
             }
-            j++;
         }
 
         //swap i,end
@@ -64,4 +65,22 @@ public class QuickSortTest {
 
         return i;
     }
+
+    public int theKElem(int[] array, int k) {
+        if (k < 1 || array == null || array.length == 0 || array.length < k) {
+            return -1;
+        }
+
+        int pivot = partition(array, 0, array.length - 1);
+        while (pivot + 1 != k) {
+            if (pivot + 1 < k) {
+                pivot = partition(array, pivot + 1, array.length - 1);
+            } else {
+                pivot = partition(array, 0, pivot - 1);
+            }
+        }
+        return array[pivot];
+
+    }
+
 }
