@@ -60,7 +60,7 @@ public class HeapTest {
             if (i * 2 <= count && a[i] < a[i * 2]) {
                 maxPos = i * 2;
             }
-            if (i * 2 + 1 <= count && a[maxPos] < a[i * 2 + 1]) {
+            if (i * 2 + 1 <= count && a[i] < a[i * 2 + 1]) {
                 maxPos = i * 2 + 1;
             }
             if (maxPos == i) {
