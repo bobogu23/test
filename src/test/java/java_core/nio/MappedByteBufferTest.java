@@ -14,7 +14,8 @@ import org.junit.Test;
 
 /**
  * 基于内存映射(mmap)零拷贝方式的实现.
- * mmap linux 系统提供的一种内存映射文件方法。将一个进程的地址空间中的一段虚拟地址映射到磁盘文件地址。将内核读缓冲区(reader buffer)的地址与用户空间的缓冲区(user buffer)进行映射。
+ * mmap linux 系统提供的一种内存映射文件方法。将一个进程的地址空间中的一段虚拟地址映射到磁盘文件地址。
+ * 将内核读缓冲区(reader buffer)的地址与用户空间的缓冲区(user buffer)进行映射。
  * 使得内核缓冲区与应用内存共享，省去将数据从内核读缓冲区拷贝到用户缓冲区。
  *
  * MappedByteBuffer 通过 {@link
