@@ -13,6 +13,7 @@ public class ClientHandlerDemo extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         System.err.println("server address:" + ctx.channel().remoteAddress());
         System.err.println("client output:" + msg);
+        Thread.sleep(1000);
         ctx.writeAndFlush("from client:" + System.currentTimeMillis());
     }
 
