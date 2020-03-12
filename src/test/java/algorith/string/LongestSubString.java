@@ -30,8 +30,8 @@ public class LongestSubString {
     public static void main(String args[]) {
 
         //"dvdf"
-        //        System.err.println(lengthOfLongestSubstring("dvdf"));
-        System.err.println(lengthOfLongestSubstring2("tmmzuxt"));
+                System.err.println(lengthOfLongestSubstring("dvdf"));
+//        System.err.println(lengthOfLongestSubstring2("tmmzuxt"));
 
     }
 

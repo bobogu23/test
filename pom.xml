@@ -57,6 +57,7 @@
     <modules>
         <module>myagent</module>
         <module>mytest01springbootstarter</module>
+        <module>shop</module>
     </modules>
 
     <dependencies>
