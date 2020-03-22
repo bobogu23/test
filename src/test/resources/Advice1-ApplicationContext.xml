@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd"
+       default-lazy-init="false">
+
+    <bean id="orderService" class="spring.aop.advice1.OrderServiceImpl"/>
+    <bean id="userService" class="spring.aop.advice1.UserServiceImpl"/>
+
+
+    <bean id="logArgsAdvice" class="spring.aop.advice1.LogArgsAdvice"/>
+    <bean id="logResultAdvice" class="spring.aop.advice1.LogResultAdvice"/>
+
+    <bean id="logArgsAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+         <property name="advice" ref="logArgsAdvice"></property>
+         <property name="pattern" value="spring.aop.advice1.*.create.*" />
+    </bean>
+
+    <bean id="logResultAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="advice" ref="logResultAdvice"></property>
+        <property name="pattern" value="spring.aop.advice1.*.query.*" />
+    </bean>
+
+   <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+</beans>
