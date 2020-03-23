@@ -1,5 +1,6 @@
 package java_core.collection.map;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -9,6 +10,10 @@ import java.util.Map;
  */
 public class MyLRUMap<K,V> extends LinkedHashMap<K,V> {
     private static final int MAX_SIZE = 4;
+
+    public MyLRUMap() {
+        super(16, 0.75F, true);
+    }
 
     @Override
     protected boolean removeEldestEntry(Map.Entry eldest) {
@@ -21,8 +26,11 @@ public class MyLRUMap<K,V> extends LinkedHashMap<K,V> {
         map.put("c","2");
         map.put("d","3");
         map.put("e","4");
+        map.get("a");
+        map.get("c");
         System.err.println(map);
         map.put("f","5");
+
         System.err.println(map);
     }
 }
