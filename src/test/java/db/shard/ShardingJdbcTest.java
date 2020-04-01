@@ -32,7 +32,7 @@ public class ShardingJdbcTest {
         dataSource1.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource1.setUrl("jdbc:mysql://localhost:3306/db00");
         dataSource1.setUsername("root");
-        dataSource1.setPassword("bobogu23@");
+        dataSource1.setPassword("");
         dataSourceMap.put("db00", dataSource1);
 
         // 配置第二个数据源
@@ -40,7 +40,7 @@ public class ShardingJdbcTest {
         dataSource2.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource2.setUrl("jdbc:mysql://localhost:3306/db01");
         dataSource2.setUsername("root");
-        dataSource2.setPassword("bobogu23@");
+        dataSource2.setPassword("");
         dataSourceMap.put("db01", dataSource2);
 
         // 配置tb_test_shard表规则
