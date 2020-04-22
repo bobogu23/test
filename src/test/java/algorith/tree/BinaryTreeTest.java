@@ -1,5 +1,7 @@
 package algorith.tree;
 
+import java.util.Stack;
+
 /**
  * 满二叉树:
  * 1.每个节点有2个子节点
@@ -27,10 +29,39 @@ public class BinaryTreeTest {
         n1.left=n4;
 
         preOrder(n3);
-
-
+        System.err.println("===========");
+        preOrderUseStack(n3);
 
     }
+
+    /**
+     * 使用栈不用递归，实现前序遍历
+     * @param node
+     */
+    private static void preOrderUseStack(Node node) {
+        if (node == null) {
+            return;
+        }
+        Stack<Node> stack = new Stack<>();
+        //
+        Node root = node;
+        while (root != null || !stack.isEmpty()){
+
+            //模拟递归先打印父节点数据,然后遍历左子树,遍历左子树的过程中,先打印父节点的数据。
+            //左子树遍历完之后，取出最后一个左子树的右节点,继续做类似的操作。如果右节点为null,再取出最后第二个左子树节点
+            while (root != null){
+                //打印节点信息,放入左节点
+                stack.push(root);
+                System.err.println(root.data);
+                root = root.left;
+            }
+            //左节点放完了,拿出来一个左节点，遍历右节点
+            Node rootNode = stack.pop();
+            root = rootNode.right;
+        }
+
+    }
+
 
     private static void preOrder(Node node) {
         if (node == null) {
