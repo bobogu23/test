@@ -64,5 +64,7 @@ awk 'BEGIN {FS=":"}
 if($1~/^Chet/){print $1 "," $3","$4","$5}
 if($3==250){print $1}
 }' file.txt
+echo -e "\n"
 
+awk -F ":" '{print NR,$1}' file.txt
 
