@@ -1,7 +1,7 @@
 package pattern.struct;
 
 /**
- * 桥接模式
+ * 结构行模式--桥接模式
  *
  * @author:ben.gu
  * @Date:2020/5/4 10:55 上午
