@@ -1,4 +1,4 @@
-package pattern.struct;
+package pattern.struct.bridge;
 
 /**
  * 抽象图类

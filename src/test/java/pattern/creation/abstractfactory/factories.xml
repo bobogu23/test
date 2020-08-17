@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config>
+    <class>pattern.creation.abstractfactory.WindowsMobileControllerFactory</class>
+</config>

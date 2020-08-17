@@ -1,4 +1,4 @@
-package pattern.struct;
+package pattern.struct.bridge;
 
 /**
  * 结构行模式--桥接模式
